@@ -1,0 +1,39 @@
+
+footer {
+    background-color: lightblue;
+    font-family: Arial, sans-serif;
+    color: darkblue;
+    padding: 10px;
+    border: 1px dashed darkblue;
+  }
+  
+ 
+  #notice {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+ 
+  .headline {
+    color: #2c5f7e;
+    border-bottom: 2px dotted #2c5f7e;
+    padding-bottom: 5px;
+  }
+  
+ 
+  h1 {
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
+    font-family: sans-serif;
+    font-size: 4em;
+  }
+  
+
+  #section {
+    font-size: small;
+    color: red;
+    font-family: Arial, sans-serif;
+    background-color: white;
+    width: 80%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+  }
