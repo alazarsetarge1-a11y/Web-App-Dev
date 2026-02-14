@@ -31,3 +31,16 @@ h1 {
     width: 80%;
     box-shadow: 2px 2px 4px gray;
 }
+
+a:link {
+    background-color: lightblue;
+}
+
+a:hover {
+    background-color: lightgreen;
+    text-decoration: none;
+}
+
+a:visited {
+    background-color: lightpink;
+}
