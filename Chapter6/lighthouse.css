@@ -30,6 +30,7 @@ main{background-color: #FFFFFF;
      padding: 10px 20px;
      overflow: auto;
      display: block;
+     margin-right: 200px;
 }
 
 footer{font-size: 70%;
