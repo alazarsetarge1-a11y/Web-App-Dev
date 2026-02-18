@@ -38,3 +38,32 @@ footer{font-size: 70%;
        background-color: #869DC7;
        clear: both;
 }
+
+h2{color: #869DC7;
+   font-family: Arial, Helvetica, sans-serif;
+}
+
+#floatright{float: right;
+            margin: 10px;
+
+}
+
+nav ul{list-style-type: none; margin: 0; padding: 0;}
+
+nav a{text-decoration: none;
+      padding: 20px;
+      display: block;
+      background-color: #B3C7E6;
+      border-bottom: 1px solid #FFFFFF;
+}
+
+nav a:link{color: #FFF;}
+nav a:visited{color: #EAEAEA;}
+nav a:hover{color: #869DC7;
+            background-color: #EAEAEA;
+}
+
+header a{text-decoration: none;}
+header a:link{color: #00005D;}
+header a:visited{color: #00005D;}
+header a:hover{color: #FFFFFF;}
