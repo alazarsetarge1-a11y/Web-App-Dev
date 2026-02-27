@@ -8,7 +8,6 @@
 <style>
   :root {
     --gold: #FFD700;
-    --board: #1a0f6e;
     --cell: #2a1fa0;
     --cell-hover: #3d2fd4;
     --green: #22c55e;
@@ -31,41 +30,41 @@
 
   h1 {
     font-family: 'Fredoka One', cursive;
-    font-size: clamp(2rem, 6vw, 4rem);
+    font-size: clamp(1.8rem, 5vw, 3.8rem);
     color: var(--gold);
     text-shadow: 3px 3px 0 #7a5000, 0 0 30px rgba(255,215,0,0.5);
     text-align: center;
     margin-bottom: 4px;
   }
 
-  .emoji-row { font-size: 2rem; margin-bottom: 10px; letter-spacing: 6px; }
+  .emoji-row { font-size: 1.8rem; margin-bottom: 10px; letter-spacing: 4px; }
 
   .score-bar {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: var(--gold);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     background: rgba(255,255,255,0.08);
-    padding: 8px 32px;
+    padding: 7px 28px;
     border-radius: 50px;
     border: 2px solid rgba(255,215,0,0.3);
   }
 
   table {
     border-collapse: separate;
-    border-spacing: 6px;
+    border-spacing: 5px;
     width: 100%;
-    max-width: 1100px;
+    max-width: 1280px;
   }
 
   thead th {
     font-family: 'Fredoka One', cursive;
-    font-size: clamp(0.85rem, 1.6vw, 1.3rem);
+    font-size: clamp(0.7rem, 1.2vw, 1.15rem);
     color: var(--gold);
     background: #12096e;
     border: 3px solid rgba(255,215,0,0.5);
     border-radius: 8px;
-    padding: 14px 8px;
+    padding: 12px 5px;
     text-align: center;
   }
 
@@ -76,7 +75,7 @@
     text-align: center;
     cursor: pointer;
     transition: all 0.15s;
-    height: 88px;
+    height: 84px;
   }
 
   td:hover:not(.revealed) {
@@ -97,7 +96,7 @@
 
   .point-value {
     font-family: 'Fredoka One', cursive;
-    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    font-size: clamp(1.1rem, 2vw, 1.8rem);
     color: var(--gold);
     text-shadow: 0 0 10px rgba(255,215,0,0.5);
   }
@@ -120,10 +119,12 @@
     border-radius: 20px;
     max-width: 640px;
     width: 92%;
-    padding: 36px 32px;
+    padding: 30px 28px;
     text-align: center;
     box-shadow: 0 0 60px rgba(255,215,0,0.3);
     animation: pop 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    max-height: 92vh;
+    overflow-y: auto;
   }
 
   @keyframes pop {
@@ -133,42 +134,73 @@
 
   .modal-cat {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.05rem;
+    font-size: 1rem;
     letter-spacing: 0.15em;
     color: var(--gold);
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .modal-pts {
     font-family: 'Fredoka One', cursive;
-    font-size: 3rem;
+    font-size: 2.6rem;
     color: var(--gold);
-    margin-bottom: 18px;
-  }
-
-  .modal-clue {
-    font-size: 1.45rem;
-    font-weight: 800;
-    line-height: 1.5;
-    color: #fff;
     margin-bottom: 14px;
   }
 
-  .modal-hint {
+  .modal-clue {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.5;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .flag-display {
+    font-size: 7rem;
+    margin: 10px 0;
+    line-height: 1;
+    animation: pop 0.3s ease;
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+
+  .choice-btn {
+    font-family: 'Fredoka One', cursive;
     font-size: 1rem;
-    color: rgba(255,255,255,0.55);
+    padding: 12px 14px;
+    border: 3px solid rgba(255,215,0,0.3);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .choice-btn:hover:not(:disabled) { background: rgba(255,215,0,0.15); border-color: var(--gold); transform: scale(1.03); }
+  .choice-btn.correct-choice { background: rgba(34,197,94,0.3); border-color: #22c55e; }
+  .choice-btn.wrong-choice   { background: rgba(239,68,68,0.3);  border-color: #ef4444; }
+  .choice-btn:disabled { cursor: default; transform: none; }
+
+  .modal-hint {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.5);
     font-style: italic;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
   .modal-answer {
     display: none;
     font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: var(--gold);
-    margin-bottom: 14px;
-    padding: 14px;
+    margin-bottom: 12px;
+    padding: 12px;
     border: 2px dashed var(--gold);
     border-radius: 12px;
     background: rgba(255,215,0,0.08);
@@ -177,14 +209,15 @@
 
   .fun-fact {
     display: none;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     color: #a0f0c0;
     background: rgba(34,197,94,0.1);
     border: 1px solid rgba(34,197,94,0.3);
     border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 18px;
+    padding: 11px;
+    margin-bottom: 14px;
     line-height: 1.5;
+    text-align: left;
   }
   .fun-fact.visible { display: block; animation: pop 0.2s ease; }
   .fun-fact span { font-weight: 800; color: #4ade80; }
@@ -193,20 +226,19 @@
 
   button {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.15rem;
-    padding: 12px 26px;
+    font-size: 1.05rem;
+    padding: 11px 22px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: transform 0.1s, box-shadow 0.1s;
   }
   button:active { transform: scale(0.95); }
-
-  .btn-reveal { background: var(--gold); color: #000; }
+  .btn-reveal  { background: var(--gold); color: #000; }
   .btn-reveal:hover { box-shadow: 0 0 20px rgba(255,215,0,0.7); }
   .btn-correct { background: var(--green); color: #fff; }
-  .btn-wrong { background: var(--red); color: #fff; }
-  .btn-skip { background: #444; color: #fff; }
+  .btn-wrong   { background: var(--red);   color: #fff; }
+  .btn-skip    { background: #444; color: #fff; }
 
   .confetti-wrap {
     display: none;
@@ -230,19 +262,16 @@
   .confetti-wrap p { font-size: 1.3rem; color: #fff; }
   .big-emoji { font-size: 4rem; }
   .play-again {
-    background: var(--gold);
-    color: #000;
-    font-size: 1.4rem;
-    padding: 14px 40px;
-    margin-top: 10px;
-    border-radius: 50px;
+    background: var(--gold); color: #000;
+    font-size: 1.4rem; padding: 14px 40px;
+    margin-top: 10px; border-radius: 50px;
   }
 </style>
 </head>
 <body>
 
 <h1>🌍 African Adventure Jeopardy!</h1>
-<div class="emoji-row">🏺 🌿 ⭐ ⚽ 🥁</div>
+<div class="emoji-row">🏺 🌿 ⭐ ⚽ 🥁 🚩</div>
 <div class="score-bar">⭐ Score: <span id="score">$0</span></div>
 
 <table>
@@ -253,6 +282,7 @@
       <th>⭐ Important Figures</th>
       <th>⚽ Sports</th>
       <th>🥁 Fun Facts</th>
+      <th>🚩 Guess the Flag!</th>
     </tr>
   </thead>
   <tbody id="tbody"></tbody>
@@ -263,6 +293,8 @@
     <div class="modal-cat" id="modal-cat"></div>
     <div class="modal-pts" id="modal-pts"></div>
     <div class="modal-clue" id="modal-clue"></div>
+    <div class="flag-display" id="flag-display" style="display:none"></div>
+    <div id="choices-area"></div>
     <div class="modal-hint" id="modal-hint"></div>
     <div class="modal-answer" id="modal-answer"></div>
     <div class="fun-fact" id="fun-fact"></div>
@@ -284,55 +316,106 @@ const categories = [
   "🌿 Geography & Nature",
   "⭐ Important Figures",
   "⚽ Sports",
-  "🥁 Fun Facts"
+  "🥁 Fun Facts",
+  "🚩 Guess the Flag!"
 ];
 
-// [clue, hint, answer, fun fact]
+// Cols 0-4: [clue, hint, answer, funfact]
+// Col 5 (flags): [clue, flagEmoji, answer, funfact, [choices], correctChoice]
 const questions = [
-  // Ancient Africa
+  // === ANCIENT AFRICA ===
   [
-    ["Ancient Egyptians built these giant triangle-shaped stone structures as tombs for their kings.", "They are still standing in the desert today!", "What are Pyramids?", "The Great Pyramid of Giza is made of over 2 MILLION stone blocks. Workers placed one block every 2 minutes for 20 years! 😲"],
+    ["Ancient Egyptians built these giant triangle-shaped stone structures as tombs for their kings.", "They're still standing in the desert today!", "What are Pyramids?", "The Great Pyramid of Giza is made of over 2 MILLION stone blocks — workers placed one every 2 minutes for 20 years! 😲"],
     ["Ancient Egyptians wrote using tiny pictures instead of letters.", "You might see them carved on temple walls.", "What are Hieroglyphics?", "There are over 700 different hieroglyphic symbols. It took years of school just to learn how to write them! 🖊️"],
-    ["This is the special wrap ancient Egyptians used to preserve bodies after death.", "Think mummies!", "What is a Mummy?", "Mummies took 70 days to make! Ancient Egyptians believed the body needed to be preserved for the afterlife. 🏺"],
-    ["Ancient Egyptians used this plant from the Nile to make a writing surface — like early paper!", "It grows tall near the river.", "What is Papyrus?", "Papyrus paper can last thousands of years — we can still READ what Egyptians wrote 4,000 years ago! 📜"],
-    ["This ancient African city in Ethiopia was so powerful it printed its own coins and traded with Rome and India.", "It had huge carved stone towers called stelae.", "What is Aksum?", "The Kingdom of Aksum was one of the most powerful empires in the ancient world — and most people have never heard of it! 🌍"],
+    ["This is the special wrap ancient Egyptians used to preserve bodies so they'd last forever.", "Think mummies!", "What is a Mummy?", "Mummies took 70 days to make! Ancient Egyptians believed the body had to be preserved for the afterlife. 🏺"],
+    ["Ancient Egyptians used this river plant to make an early version of paper!", "It grows tall along the Nile.", "What is Papyrus?", "Papyrus paper can last thousands of years — we can still READ what Egyptians wrote 4,000 years ago! 📜"],
+    ["This ancient African city in Ethiopia traded with Rome, India, and Persia and printed its own coins.", "It had giant carved stone towers called stelae.", "What is Aksum?", "The Kingdom of Aksum was one of the most powerful empires in the ancient world — and most people have never heard of it! 🌍"],
   ],
-  // Geography & Nature
+
+  // === GEOGRAPHY & NATURE ===
   [
-    ["This is the longest river in the world, and it flows through Africa.", "It helped ancient Egyptians grow food in the desert.", "What is the Nile River?", "The Nile River is 4,132 miles long — if you drove it at highway speed it would take over 2 days non-stop! 🌊"],
-    ["Africa's tallest mountain has SNOW on top, even though it's near the hot equator.", "It's in the country of Tanzania.", "What is Mount Kilimanjaro?", "Kilimanjaro is so tall that the top is like being in a different climate zone. You'd go from rainforest to arctic in one hike! 🏔️"],
-    ["This is the biggest hot desert in the world and covers the top of Africa.", "It's full of sand dunes and is very hot during the day.", "What is the Sahara Desert?", "The Sahara is almost as big as the entire United States! But some parts actually get snow in winter. 🌵"],
-    ["This African animal is the largest land animal on Earth and uses its nose like a hand.", "It has big ears shaped like the continent of Africa!", "What is an Elephant?", "African elephants can recognize themselves in mirrors, mourn their dead, and even comfort sad friends — they have huge feelings! 🐘"],
-    ["This fast African cat has spots and is the speediest land animal on the planet.", "It can go from 0 to 60 mph in 3 seconds!", "What is a Cheetah?", "A cheetah's spots are like fingerprints — no two cheetahs have exactly the same pattern! 🐆"],
+    ["This is the longest river in the world, flowing all the way through Africa to the sea.", "It helped ancient Egyptians grow food in the middle of the desert.", "What is the Nile River?", "The Nile River is 4,132 miles long — if you drove it at highway speed it would take over 2 days without stopping! 🌊"],
+    ["Africa's tallest mountain has SNOW on top even though it's near the hot equator.", "It's in Tanzania and you can hike to the top!", "What is Mount Kilimanjaro?", "Kilimanjaro is so tall you pass through 5 climate zones hiking it — from tropical rainforest all the way to arctic glaciers! 🏔️"],
+    ["This is the biggest hot desert in the world and covers most of the top of Africa.", "It's full of sand dunes, camels, and scorching heat.", "What is the Sahara Desert?", "The Sahara is almost as big as the entire United States! But some parts actually get snow in winter. 🌵"],
+    ["This African giant is the largest land animal on Earth. Its ears are shaped like the continent of Africa!", "It uses its nose like a hand to drink, pick things up, and say hello.", "What is an Elephant?", "Elephants can recognize themselves in mirrors, mourn their dead, and comfort sad friends — they have feelings just like us! 🐘"],
+    ["This speedy spotted African cat is the fastest land animal on the planet.", "It can go from 0 to 60 mph in just 3 seconds!", "What is a Cheetah?", "A cheetah's spots are like fingerprints — no two cheetahs have exactly the same pattern! 🐆"],
   ],
-  // Important Figures
+
+  // === IMPORTANT FIGURES ===
   [
-    ["This South African leader spent 27 years in jail and then became the first Black president of South Africa.", "He is one of the most famous people in history.", "Who is Nelson Mandela?", "Nelson Mandela was locked up for fighting for equal rights. When he got out, instead of being angry, he worked to forgive and unite his country. 🕊️"],
-    ["This super rich king from the Mali Empire went on a trip in 1324 and gave away SO much gold he accidentally crashed prices across Africa and Europe.", "He may have been the richest person who ever lived.", "Who is Mansa Musa?", "Mansa Musa brought 60,000 people and 12,000 servants on his trip, and gave away so much gold that prices stayed low for 10 years! 💰"],
-    ["This brave queen from Angola fought against Portuguese soldiers to protect her people in the 1600s.", "She was still leading her army in her 60s!", "Who is Queen Nzinga?", "Queen Nzinga was so fierce that Portuguese leaders were afraid to sit higher than her — so she sat on one of her servants as a royal chair! 👑"],
-    ["This Nigerian author wrote 'Things Fall Apart,' the most popular African novel of all time, about the effects of colonialism.", "He's called the father of African literature.", "Who is Chinua Achebe?", "'Things Fall Apart' has been translated into over 57 languages and sold more than 20 million copies around the world! 📚"],
-    ["This Ethiopian runner won 4 Olympic gold medals and is considered one of the greatest distance runners ever.", "He ran barefoot in his first Olympic race!", "Who is Abebe Bikila?", "Abebe Bikila ran the 1960 Olympic marathon barefoot through Rome at night — and set a world record doing it! 🏃"],
+    ["This South African leader spent 27 years in prison for fighting for equal rights, then became his country's first Black president.", "He is one of the most beloved people in all of history.", "Who is Nelson Mandela?", "When Mandela got out of prison, instead of being angry, he worked to forgive his enemies and unite South Africa. The world called it a miracle. 🕊️"],
+    ["This incredibly rich king from the Mali Empire gave away SO much gold on a trip in 1324 that he accidentally crashed prices across Africa and Europe!", "He may have been the wealthiest person who ever lived.", "Who is Mansa Musa?", "Mansa Musa brought 60,000 people on his trip and gave away so much gold that prices stayed low for 10 years in every country he visited! 💰"],
+    ["This brave queen from Angola fought against Portuguese soldiers to protect her people in the 1600s and was still leading her army in her 60s!", "She was known for her clever military strategies.", "Who is Queen Nzinga?", "Queen Nzinga was so fierce that Portuguese leaders were scared to sit higher than her — so she sat on one of her attendants as a living throne! 👑"],
+    ["This Nigerian author wrote 'Things Fall Apart,' the most popular African novel of all time.", "He is called the father of African literature.", "Who is Chinua Achebe?", "'Things Fall Apart' has been translated into 57 languages and sold over 20 million copies — one of the best-selling books in history! 📚"],
+    ["This Ethiopian runner shocked the world at the 1960 Olympics when he ran the marathon with NO shoes — and still won with a world record!", "He is considered one of the greatest distance runners ever.", "Who is Abebe Bikila?", "Abebe Bikila ran the entire Olympic marathon barefoot through the streets of Rome at night — and set a world record. Pure legend! 🏃"],
   ],
-  // Sports
+
+  // === SPORTS ===
   [
-    ["This sport is the most popular in Africa — almost every country plays it, and kids play it on any open field they can find.", "You use your feet and a round ball!", "What is Soccer (Football)?", "African kids sometimes make soccer balls out of plastic bags and string when they can't afford a real one. They still play beautiful football! ⚽"],
-    ["Africa hosted its first-ever FIFA World Cup in 2010. Which country hosted it?", "It's at the very southern tip of Africa.", "What is South Africa?", "South Africa's World Cup introduced the world to the vuvuzela — a loud horn that fans blew non-stop. Love it or hate it, everyone heard it! 📯"],
-    ["This Cameroonian player was the first African to win the FIFA World Player of the Year award, back in 2003 and 2004.", "He played for Barcelona and Real Madrid.", "Who is Samuel Eto'o?", "Samuel Eto'o grew up in Cameroon and was rejected by teams as a kid — he kept going and became one of the best players in the world! ⭐"],
-    ["This African country has won the most African Cup of Nations (AFCON) titles — 7 times!", "It's a country in North Africa.", "What is Egypt?", "Egypt's national team is so dominant in Africa that fans call them 'The Pharaohs' — named after the ancient rulers of Egypt! 🏆"],
-    ["This Kenyan runner is famous for breaking world records in long-distance running. Kenya dominates this event at the Olympics.", "Think 5K, 10K, and marathon races.", "What is Long-Distance Running?", "Kenya's Rift Valley region sits over 6,000 feet above sea level — growing up running in thin mountain air gives Kenyan runners a huge natural advantage! 🏅"],
+    ["This sport is the most popular in Africa — kids play it on dirt fields, streets, and anywhere they can find space.", "You use your feet and a round ball!", "What is Soccer (Football)?", "African kids sometimes make soccer balls from plastic bags and string when they can't afford a real one — and still play beautiful football! ⚽"],
+    ["This Nigerian-born NBA star grew up in Lagos, became a Houston Rocket, and is called 'The Dream' for his unstoppable post moves. He was even drafted ahead of Michael Jordan!", "He won 2 NBA championships with Houston.", "Who is Hakeem Olajuwon?", "Hakeem won 2 championships, 2 Finals MVPs, and Defensive Player of the Year — all while fasting for Ramadan during playoff runs. Absolute legend! 🏀"],
+    ["This Cameroonian soccer star was the first African to win FIFA World Player of the Year, in 2003 and 2004.", "He played for Barcelona and Real Madrid.", "Who is Samuel Eto'o?", "Samuel Eto'o was rejected by teams as a kid and nearly gave up — he kept going and became one of the greatest African players ever! ⭐"],
+    ["Africa hosted its first-ever FIFA World Cup in 2010. Which country was the proud host?", "It's at the very southern tip of Africa.", "What is South Africa?", "South Africa's World Cup introduced the world to the vuvuzela horn — love it or hate it, everyone on Earth heard it! 📯"],
+    ["This African country has won the most Africa Cup of Nations titles — 7 times total!", "It's in North Africa and named after a famous ancient civilization.", "What is Egypt?", "Egypt's national soccer team is called 'The Pharaohs' — named after the ancient rulers who built the pyramids! 🏆"],
   ],
-  // Fun Facts
+
+  // === FUN FACTS ===
   [
-    ["ALL humans on Earth originally came from this continent. Scientists call it the birthplace of humanity.", "Every family tree leads back here!", "What is Africa?", "Scientists found human fossils in Africa dating back 300,000 years. Every person alive today — no matter where they're from — has African ancestors! 🧬"],
-    ["The city of Timbuktu in Mali was one of the world's greatest centers of learning. It had one of the very first of these places where students study.", "Students came from Europe and Asia to study there!", "What is a University?", "Timbuktu's Sankore University had 25,000 students in the 1400s — and stored over 700,000 ancient books, many of which are still being studied today! 📚"],
-    ["Africa has more countries than any other continent in the world. How many countries does Africa have?", "The answer is more than 50!", "What is 54 countries?", "Africa also has over 2,000 different languages spoken across those 54 countries. That's more language diversity than any other continent! 🗣️"],
-    ["Ancient Africans invented many things we still use. This ancient invention helped people track days, months, and seasons.", "You look at one every day!", "What is the Calendar?", "Ancient Egyptians created one of the first 365-day calendars about 5,000 years ago — our modern calendar is based on theirs! 📅"],
-    ["Africa is home to the world's second-largest rainforest, sometimes called the 'lungs of Africa.' It's in Central Africa.", "A massive river runs through it.", "What is the Congo Rainforest?", "The Congo Rainforest absorbs millions of tons of carbon dioxide every year, helping keep our entire planet from getting too warm! 🌿"],
+    ["ALL humans on Earth originally came from this continent. Scientists call it the birthplace of humanity.", "Every family tree on Earth leads back here!", "What is Africa?", "Scientists found human fossils in Africa dating back 300,000 years. Every single person alive today — no matter where they're from — has African ancestors! 🧬"],
+    ["The city of Timbuktu in Mali was one of the world's greatest centers of learning in the 1400s. It had one of the very first of these places where students go to study.", "Students came from Europe and Asia to attend!", "What is a University?", "Timbuktu's Sankore University had 25,000 students and stored over 700,000 ancient books — many are still being studied by scholars today! 📚"],
+    ["Africa has more countries than any other continent. How many countries does Africa have?", "The answer is more than 50!", "What is 54 countries?", "Africa also has over 2,000 different languages spoken across those 54 countries — more language diversity than any other continent! 🗣️"],
+    ["Ancient Africans created one of the first 365-day versions of this thing we use every single day to track time.", "You look at one on your phone every morning!", "What is the Calendar?", "Ancient Egyptians made a 365-day calendar about 5,000 years ago — our modern calendar is directly based on theirs! 📅"],
+    ["Africa is home to the world's second-largest rainforest, called the 'lungs of Africa,' in Central Africa.", "A massive river runs right through it.", "What is the Congo Rainforest?", "The Congo Rainforest absorbs millions of tons of CO₂ every year, helping keep our entire planet from getting too warm! 🌿"],
+  ],
+
+  // === GUESS THE FLAG ===
+  // [clue, flagEmoji, answer, funfact, [choices], correctChoice]
+  [
+    [
+      "Which African country does this flag belong to?",
+      "🇳🇬",
+      "Nigeria!",
+      "Nigeria's green stripes represent agriculture and its white stripe stands for peace. Nigeria is the most populated country in Africa with over 220 million people! 🇳🇬",
+      ["Nigeria 🇳🇬", "Ghana 🇬🇭", "Senegal 🇸🇳", "Kenya 🇰🇪"],
+      "Nigeria 🇳🇬"
+    ],
+    [
+      "Which African country does this flag belong to?",
+      "🇿🇦",
+      "South Africa!",
+      "South Africa's flag has 6 colors — the most of any national flag! It was designed in 1994 to celebrate the end of apartheid and the unity of all its people. 🌈",
+      ["Ethiopia 🇪🇹", "South Africa 🇿🇦", "Zimbabwe 🇿🇼", "Mozambique 🇲🇿"],
+      "South Africa 🇿🇦"
+    ],
+    [
+      "Which African country does this flag belong to?",
+      "🇬🇭",
+      "Ghana!",
+      "Ghana's flag has a black star called the 'Black Star of Africa' — a symbol of African freedom. Ghana was the first sub-Saharan country to gain independence, in 1957! ⭐",
+      ["Cameroon 🇨🇲", "Mali 🇲🇱", "Ghana 🇬🇭", "Guinea 🇬🇳"],
+      "Ghana 🇬🇭"
+    ],
+    [
+      "Which African country does this flag belong to?",
+      "🇪🇹",
+      "Ethiopia!",
+      "Ethiopia's green, yellow, and red colors inspired the flags of dozens of other African nations! Ethiopia is also the only African country that was NEVER colonized by Europeans. 💪",
+      ["Kenya 🇰🇪", "Tanzania 🇹🇿", "Uganda 🇺🇬", "Ethiopia 🇪🇹"],
+      "Ethiopia 🇪🇹"
+    ],
+    [
+      "Which African country does this flag belong to?",
+      "🇰🇪",
+      "Kenya!",
+      "Kenya's flag features a Maasai shield and spears, representing the defense of freedom. Kenya is also famous for producing some of the greatest long-distance runners in history! 🛡️",
+      ["Rwanda 🇷🇼", "Kenya 🇰🇪", "Somalia 🇸🇴", "Zambia 🇿🇲"],
+      "Kenya 🇰🇪"
+    ],
   ],
 ];
 
 const points = [100, 200, 300, 400, 500];
-const revealed = Array.from({length:5}, ()=>Array(5).fill(false));
+const revealed = Array.from({length:5}, ()=>Array(6).fill(false));
 let score = 0;
 let current = null;
 
@@ -340,7 +423,7 @@ function buildBoard() {
   const tbody = document.getElementById('tbody');
   for (let row = 0; row < 5; row++) {
     const tr = document.createElement('tr');
-    for (let col = 0; col < 5; col++) {
+    for (let col = 0; col < 6; col++) {
       const td = document.createElement('td');
       td.innerHTML = `<span class="point-value">$${points[row]}</span>`;
       td.dataset.row = row; td.dataset.col = col;
@@ -353,21 +436,69 @@ function buildBoard() {
 
 function openModal(row, col) {
   if (revealed[row][col]) return;
-  current = {row, col};
-  const [clue, hint, answer, fact] = questions[col][row];
+  current = {row, col, answered: false};
+
+  const q = questions[col][row];
   document.getElementById('modal-cat').textContent = categories[col];
   document.getElementById('modal-pts').textContent = `$${points[row]}`;
-  document.getElementById('modal-clue').textContent = clue;
-  document.getElementById('modal-hint').textContent = `💡 Hint: ${hint}`;
-  document.getElementById('modal-answer').textContent = `✅ ${answer}`;
   document.getElementById('modal-answer').classList.remove('visible');
-  document.getElementById('fun-fact').innerHTML = `<span>🌟 Fun Fact!</span> ${fact}`;
   document.getElementById('fun-fact').classList.remove('visible');
-  document.getElementById('btn-row').innerHTML = `
-    <button class="btn-reveal" onclick="revealAnswer()">Show Answer 👀</button>
-    <button class="btn-skip" onclick="closeModal(false)">Skip</button>
-  `;
+  document.getElementById('choices-area').innerHTML = '';
+  document.getElementById('flag-display').style.display = 'none';
+  document.getElementById('flag-display').textContent = '';
+
+  if (col === 5) {
+    // FLAG question
+    const [clue, flag, answer, fact, choices, correct] = q;
+    document.getElementById('modal-clue').textContent = clue;
+    document.getElementById('flag-display').textContent = flag;
+    document.getElementById('flag-display').style.display = 'block';
+    document.getElementById('modal-hint').textContent = '👀 Pick the right country!';
+    document.getElementById('modal-answer').textContent = `✅ ${answer}`;
+    document.getElementById('fun-fact').innerHTML = `<span>🌟 Fun Fact!</span> ${fact}`;
+
+    const grid = document.createElement('div');
+    grid.className = 'choices';
+    choices.forEach(choice => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = choice;
+      btn.onclick = () => handleFlagChoice(choice, correct, btn);
+      grid.appendChild(btn);
+    });
+    document.getElementById('choices-area').appendChild(grid);
+    document.getElementById('btn-row').innerHTML = `<button class="btn-skip" onclick="closeModal(false)">Skip</button>`;
+  } else {
+    // Regular question
+    const [clue, hint, answer, fact] = q;
+    document.getElementById('modal-clue').textContent = clue;
+    document.getElementById('modal-hint').textContent = `💡 Hint: ${hint}`;
+    document.getElementById('modal-answer').textContent = `✅ ${answer}`;
+    document.getElementById('fun-fact').innerHTML = `<span>🌟 Fun Fact!</span> ${fact}`;
+    document.getElementById('btn-row').innerHTML = `
+      <button class="btn-reveal" onclick="revealAnswer()">Show Answer 👀</button>
+      <button class="btn-skip" onclick="closeModal(false)">Skip</button>
+    `;
+  }
+
   document.getElementById('overlay').classList.add('active');
+}
+
+function handleFlagChoice(choice, correct, btn) {
+  if (current.answered) return;
+  current.answered = true;
+  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+  const isCorrect = choice === correct;
+  btn.classList.add(isCorrect ? 'correct-choice' : 'wrong-choice');
+  if (!isCorrect) {
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (b.textContent === correct) b.classList.add('correct-choice');
+    });
+  }
+  document.getElementById('fun-fact').classList.add('visible');
+  document.getElementById('btn-row').innerHTML = isCorrect
+    ? `<button class="btn-correct" onclick="closeModal(true)">🎉 Correct! +$${points[current.row]}</button>`
+    : `<button class="btn-wrong" onclick="closeModal(false)">❌ Not quite — keep going!</button>`;
 }
 
 function revealAnswer() {
