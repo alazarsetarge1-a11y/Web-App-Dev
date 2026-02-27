@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>African Adventure Jeopardy!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --board: #1a0f6e;
+    --cell: #2a1fa0;
+    --cell-hover: #3d2fd4;
+    --green: #22c55e;
+    --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d0a3d;
+    background-image: radial-gradient(ellipse at 10% 10%, #2a1060 0%, transparent 55%),
+                      radial-gradient(ellipse at 90% 90%, #3a0a20 0%, transparent 55%);
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold);
+    text-shadow: 3px 3px 0 #7a5000, 0 0 30px rgba(255,215,0,0.5);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .emoji-row { font-size: 2rem; margin-bottom: 10px; letter-spacing: 6px; }
+
+  .score-bar {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+    background: rgba(255,255,255,0.08);
+    padding: 8px 32px;
+    border-radius: 50px;
+    border: 2px solid rgba(255,215,0,0.3);
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 6px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  thead th {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(0.85rem, 1.6vw, 1.3rem);
+    color: var(--gold);
+    background: #12096e;
+    border: 3px solid rgba(255,215,0,0.5);
+    border-radius: 8px;
+    padding: 14px 8px;
+    text-align: center;
+  }
+
+  td {
+    background: var(--cell);
+    border: 3px solid #4a3fcc;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    height: 88px;
+  }
+
+  td:hover:not(.revealed) {
+    background: var(--cell-hover);
+    transform: scale(1.05);
+    box-shadow: 0 0 22px rgba(255,215,0,0.45);
+    border-color: var(--gold);
+    z-index: 2;
+    position: relative;
+  }
+
+  td.revealed {
+    background: #111;
+    border-color: #333;
+    cursor: default;
+    font-size: 1.8rem;
+  }
+
+  .point-value {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(255,215,0,0.5);
+  }
+
+  /* Modal */
+  .overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay.active { display: flex; }
+
+  .modal {
+    background: #1e1480;
+    border: 4px solid var(--gold);
+    border-radius: 20px;
+    max-width: 640px;
+    width: 92%;
+    padding: 36px 32px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(255,215,0,0.3);
+    animation: pop 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-cat {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.05rem;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .modal-pts {
+    font-family: 'Fredoka One', cursive;
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .modal-clue {
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.5;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .modal-hint {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .modal-answer {
+    display: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+    padding: 14px;
+    border: 2px dashed var(--gold);
+    border-radius: 12px;
+    background: rgba(255,215,0,0.08);
+  }
+  .modal-answer.visible { display: block; animation: pop 0.2s ease; }
+
+  .fun-fact {
+    display: none;
+    font-size: 0.95rem;
+    color: #a0f0c0;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .fun-fact.visible { display: block; animation: pop 0.2s ease; }
+  .fun-fact span { font-weight: 800; color: #4ade80; }
+
+  .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  button {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    padding: 12px 26px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  button:active { transform: scale(0.95); }
+
+  .btn-reveal { background: var(--gold); color: #000; }
+  .btn-reveal:hover { box-shadow: 0 0 20px rgba(255,215,0,0.7); }
+  .btn-correct { background: var(--green); color: #fff; }
+  .btn-wrong { background: var(--red); color: #fff; }
+  .btn-skip { background: #444; color: #fff; }
+
+  .confetti-wrap {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.92);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 30px;
+  }
+  .confetti-wrap.active { display: flex; }
+  .confetti-wrap h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold);
+    text-shadow: 3px 3px 0 #7a5000;
+  }
+  .confetti-wrap p { font-size: 1.3rem; color: #fff; }
+  .big-emoji { font-size: 4rem; }
+  .play-again {
+    background: var(--gold);
+    color: #000;
+    font-size: 1.4rem;
+    padding: 14px 40px;
+    margin-top: 10px;
+    border-radius: 50px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🌍 African Adventure Jeopardy!</h1>
+<div class="emoji-row">🏺 🌿 ⭐ ⚽ 🥁</div>
+<div class="score-bar">⭐ Score: <span id="score">$0</span></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>🏺 Ancient Africa</th>
+      <th>🌿 Geography & Nature</th>
+      <th>⭐ Important Figures</th>
+      <th>⚽ Sports</th>
+      <th>🥁 Fun Facts</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-cat" id="modal-cat"></div>
+    <div class="modal-pts" id="modal-pts"></div>
+    <div class="modal-clue" id="modal-clue"></div>
+    <div class="modal-hint" id="modal-hint"></div>
+    <div class="modal-answer" id="modal-answer"></div>
+    <div class="fun-fact" id="fun-fact"></div>
+    <div class="btn-row" id="btn-row"></div>
+  </div>
+</div>
+
+<div class="confetti-wrap" id="endscreen">
+  <div class="big-emoji">🎉🌍🎉</div>
+  <h2>You Did It!</h2>
+  <p>Final Score: <strong><span id="final-score"></span></strong></p>
+  <p>You're an African History Star! ⭐</p>
+  <button class="play-again" onclick="location.reload()">Play Again!</button>
+</div>
+
+<script>
+const categories = [
+  "🏺 Ancient Africa",
+  "🌿 Geography & Nature",
+  "⭐ Important Figures",
+  "⚽ Sports",
+  "🥁 Fun Facts"
+];
+
+// [clue, hint, answer, fun fact]
+const questions = [
+  // Ancient Africa
+  [
+    ["Ancient Egyptians built these giant triangle-shaped stone structures as tombs for their kings.", "They are still standing in the desert today!", "What are Pyramids?", "The Great Pyramid of Giza is made of over 2 MILLION stone blocks. Workers placed one block every 2 minutes for 20 years! 😲"],
+    ["Ancient Egyptians wrote using tiny pictures instead of letters.", "You might see them carved on temple walls.", "What are Hieroglyphics?", "There are over 700 different hieroglyphic symbols. It took years of school just to learn how to write them! 🖊️"],
+    ["This is the special wrap ancient Egyptians used to preserve bodies after death.", "Think mummies!", "What is a Mummy?", "Mummies took 70 days to make! Ancient Egyptians believed the body needed to be preserved for the afterlife. 🏺"],
+    ["Ancient Egyptians used this plant from the Nile to make a writing surface — like early paper!", "It grows tall near the river.", "What is Papyrus?", "Papyrus paper can last thousands of years — we can still READ what Egyptians wrote 4,000 years ago! 📜"],
+    ["This ancient African city in Ethiopia was so powerful it printed its own coins and traded with Rome and India.", "It had huge carved stone towers called stelae.", "What is Aksum?", "The Kingdom of Aksum was one of the most powerful empires in the ancient world — and most people have never heard of it! 🌍"],
+  ],
+  // Geography & Nature
+  [
+    ["This is the longest river in the world, and it flows through Africa.", "It helped ancient Egyptians grow food in the desert.", "What is the Nile River?", "The Nile River is 4,132 miles long — if you drove it at highway speed it would take over 2 days non-stop! 🌊"],
+    ["Africa's tallest mountain has SNOW on top, even though it's near the hot equator.", "It's in the country of Tanzania.", "What is Mount Kilimanjaro?", "Kilimanjaro is so tall that the top is like being in a different climate zone. You'd go from rainforest to arctic in one hike! 🏔️"],
+    ["This is the biggest hot desert in the world and covers the top of Africa.", "It's full of sand dunes and is very hot during the day.", "What is the Sahara Desert?", "The Sahara is almost as big as the entire United States! But some parts actually get snow in winter. 🌵"],
+    ["This African animal is the largest land animal on Earth and uses its nose like a hand.", "It has big ears shaped like the continent of Africa!", "What is an Elephant?", "African elephants can recognize themselves in mirrors, mourn their dead, and even comfort sad friends — they have huge feelings! 🐘"],
+    ["This fast African cat has spots and is the speediest land animal on the planet.", "It can go from 0 to 60 mph in 3 seconds!", "What is a Cheetah?", "A cheetah's spots are like fingerprints — no two cheetahs have exactly the same pattern! 🐆"],
+  ],
+  // Important Figures
+  [
+    ["This South African leader spent 27 years in jail and then became the first Black president of South Africa.", "He is one of the most famous people in history.", "Who is Nelson Mandela?", "Nelson Mandela was locked up for fighting for equal rights. When he got out, instead of being angry, he worked to forgive and unite his country. 🕊️"],
+    ["This super rich king from the Mali Empire went on a trip in 1324 and gave away SO much gold he accidentally crashed prices across Africa and Europe.", "He may have been the richest person who ever lived.", "Who is Mansa Musa?", "Mansa Musa brought 60,000 people and 12,000 servants on his trip, and gave away so much gold that prices stayed low for 10 years! 💰"],
+    ["This brave queen from Angola fought against Portuguese soldiers to protect her people in the 1600s.", "She was still leading her army in her 60s!", "Who is Queen Nzinga?", "Queen Nzinga was so fierce that Portuguese leaders were afraid to sit higher than her — so she sat on one of her servants as a royal chair! 👑"],
+    ["This Nigerian author wrote 'Things Fall Apart,' the most popular African novel of all time, about the effects of colonialism.", "He's called the father of African literature.", "Who is Chinua Achebe?", "'Things Fall Apart' has been translated into over 57 languages and sold more than 20 million copies around the world! 📚"],
+    ["This Ethiopian runner won 4 Olympic gold medals and is considered one of the greatest distance runners ever.", "He ran barefoot in his first Olympic race!", "Who is Abebe Bikila?", "Abebe Bikila ran the 1960 Olympic marathon barefoot through Rome at night — and set a world record doing it! 🏃"],
+  ],
+  // Sports
+  [
+    ["This sport is the most popular in Africa — almost every country plays it, and kids play it on any open field they can find.", "You use your feet and a round ball!", "What is Soccer (Football)?", "African kids sometimes make soccer balls out of plastic bags and string when they can't afford a real one. They still play beautiful football! ⚽"],
+    ["Africa hosted its first-ever FIFA World Cup in 2010. Which country hosted it?", "It's at the very southern tip of Africa.", "What is South Africa?", "South Africa's World Cup introduced the world to the vuvuzela — a loud horn that fans blew non-stop. Love it or hate it, everyone heard it! 📯"],
+    ["This Cameroonian player was the first African to win the FIFA World Player of the Year award, back in 2003 and 2004.", "He played for Barcelona and Real Madrid.", "Who is Samuel Eto'o?", "Samuel Eto'o grew up in Cameroon and was rejected by teams as a kid — he kept going and became one of the best players in the world! ⭐"],
+    ["This African country has won the most African Cup of Nations (AFCON) titles — 7 times!", "It's a country in North Africa.", "What is Egypt?", "Egypt's national team is so dominant in Africa that fans call them 'The Pharaohs' — named after the ancient rulers of Egypt! 🏆"],
+    ["This Kenyan runner is famous for breaking world records in long-distance running. Kenya dominates this event at the Olympics.", "Think 5K, 10K, and marathon races.", "What is Long-Distance Running?", "Kenya's Rift Valley region sits over 6,000 feet above sea level — growing up running in thin mountain air gives Kenyan runners a huge natural advantage! 🏅"],
+  ],
+  // Fun Facts
+  [
+    ["ALL humans on Earth originally came from this continent. Scientists call it the birthplace of humanity.", "Every family tree leads back here!", "What is Africa?", "Scientists found human fossils in Africa dating back 300,000 years. Every person alive today — no matter where they're from — has African ancestors! 🧬"],
+    ["The city of Timbuktu in Mali was one of the world's greatest centers of learning. It had one of the very first of these places where students study.", "Students came from Europe and Asia to study there!", "What is a University?", "Timbuktu's Sankore University had 25,000 students in the 1400s — and stored over 700,000 ancient books, many of which are still being studied today! 📚"],
+    ["Africa has more countries than any other continent in the world. How many countries does Africa have?", "The answer is more than 50!", "What is 54 countries?", "Africa also has over 2,000 different languages spoken across those 54 countries. That's more language diversity than any other continent! 🗣️"],
+    ["Ancient Africans invented many things we still use. This ancient invention helped people track days, months, and seasons.", "You look at one every day!", "What is the Calendar?", "Ancient Egyptians created one of the first 365-day calendars about 5,000 years ago — our modern calendar is based on theirs! 📅"],
+    ["Africa is home to the world's second-largest rainforest, sometimes called the 'lungs of Africa.' It's in Central Africa.", "A massive river runs through it.", "What is the Congo Rainforest?", "The Congo Rainforest absorbs millions of tons of carbon dioxide every year, helping keep our entire planet from getting too warm! 🌿"],
+  ],
+];
+
+const points = [100, 200, 300, 400, 500];
+const revealed = Array.from({length:5}, ()=>Array(5).fill(false));
+let score = 0;
+let current = null;
+
+function buildBoard() {
+  const tbody = document.getElementById('tbody');
+  for (let row = 0; row < 5; row++) {
+    const tr = document.createElement('tr');
+    for (let col = 0; col < 5; col++) {
+      const td = document.createElement('td');
+      td.innerHTML = `<span class="point-value">$${points[row]}</span>`;
+      td.dataset.row = row; td.dataset.col = col;
+      td.onclick = () => openModal(row, col);
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+function openModal(row, col) {
+  if (revealed[row][col]) return;
+  current = {row, col};
+  const [clue, hint, answer, fact] = questions[col][row];
+  document.getElementById('modal-cat').textContent = categories[col];
+  document.getElementById('modal-pts').textContent = `$${points[row]}`;
+  document.getElementById('modal-clue').textContent = clue;
+  document.getElementById('modal-hint').textContent = `💡 Hint: ${hint}`;
+  document.getElementById('modal-answer').textContent = `✅ ${answer}`;
+  document.getElementById('modal-answer').classList.remove('visible');
+  document.getElementById('fun-fact').innerHTML = `<span>🌟 Fun Fact!</span> ${fact}`;
+  document.getElementById('fun-fact').classList.remove('visible');
+  document.getElementById('btn-row').innerHTML = `
+    <button class="btn-reveal" onclick="revealAnswer()">Show Answer 👀</button>
+    <button class="btn-skip" onclick="closeModal(false)">Skip</button>
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
+function revealAnswer() {
+  document.getElementById('modal-answer').classList.add('visible');
+  document.getElementById('fun-fact').classList.add('visible');
+  document.getElementById('btn-row').innerHTML = `
+    <button class="btn-correct" onclick="closeModal(true)">🎉 Got it! +$${points[current.row]}</button>
+    <button class="btn-wrong" onclick="closeModal(false)">❌ Not quite</button>
+  `;
+}
+
+function closeModal(correct) {
+  if (current) {
+    const {row, col} = current;
+    revealed[row][col] = true;
+    const td = document.querySelector(`td[data-row="${row}"][data-col="${col}"]`);
+    td.classList.add('revealed');
+    td.innerHTML = correct ? '🌟' : '❌';
+    td.onclick = null;
+    if (correct) {
+      score += points[row];
+      document.getElementById('score').textContent = `$${score}`;
+    }
+  }
+  document.getElementById('overlay').classList.remove('active');
+  current = null;
+  checkDone();
+}
+
+function checkDone() {
+  if (revealed.every(r => r.every(v => v))) {
+    document.getElementById('final-score').textContent = `$${score}`;
+    document.getElementById('endscreen').classList.add('active');
+  }
+}
+
+buildBoard();
+</script>
+</body>
+</html>
