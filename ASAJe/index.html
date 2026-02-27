@@ -55,6 +55,7 @@
     border-spacing: 5px;
     width: 100%;
     max-width: 1280px;
+    table-layout: fixed;
   }
 
   thead th {
@@ -66,6 +67,7 @@
     border-radius: 8px;
     padding: 12px 5px;
     text-align: center;
+    width: calc(100% / 6);
   }
 
   td {
@@ -76,6 +78,7 @@
     cursor: pointer;
     transition: all 0.15s;
     height: 84px;
+    width: calc(100% / 6);
   }
 
   td:hover:not(.revealed) {
@@ -462,7 +465,9 @@ function openModal(row, col) {
     choices.forEach(choice => {
       const btn = document.createElement('button');
       btn.className = 'choice-btn';
-      btn.textContent = choice;
+      // Strip the flag emoji so it doesn't give away the answer
+      btn.textContent = choice.replace(/[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/g, '').trim();
+      btn.dataset.value = choice;
       btn.onclick = () => handleFlagChoice(choice, correct, btn);
       grid.appendChild(btn);
     });
