@@ -1,10 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Template</title>
+<meta charset="UTF-8">
+<title>Alazar's Sitemap</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; padding: 40px; }
+  h2 { margin-bottom: 30px; }
+  .box {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    border: 2px solid black;
+    line-height: 1.4;
+    vertical-align: top;
+    text-decoration: none;
+    color: black;
+    font-size: 13px;
+    padding: 10px;
+  }
+  .box:hover { background: #eee; }
+  .row { margin: 10px 0; }
+  .line {
+    display: inline-block;
+    width: 2px;
+    height: 30px;
+    background: black;
+    margin: 0 auto;
+  }
+  .hline {
+    display: inline-block;
+    width: 420px;
+    height: 2px;
+    background: black;
+    vertical-align: top;
+    margin-top: 0;
+  }
+  .branches {
+    display: inline-flex;
+    justify-content: space-between;
+    width: 420px;
+  }
+  .branch { display: inline-flex; flex-direction: column; align-items: center; }
+</style>
 </head>
 <body>
-    <h1>Example</h1>
-<a href="example.html"> anchor.html</a>
+
+<h2>My Website Sitemap</h2>
+
+<!-- Home -->
+<div class="row">
+  <a class="box" href="file:///Chapter4/setarge.html" target="_blank">Home<br>setarge.html</a>
+</div>
+
+<!-- Down line -->
+<div><div class="line"></div></div>
+
+<!-- Horizontal line -->
+<div><div class="hline"></div></div>
+
+
+<div>
+  <div class="branches">
+    <div class="branch">
+      <div class="line"></div>
+      <a class="box" href="file:///Chapter6/mylinks.html" target="_blank">My Links<br>mylinks.html</a>
+    </div>
+    <div class="branch">
+      <div class="line"></div>
+      <a class="box" href="file:///Chapter6/myhobby.html" target="_blank">My Hobby<br>myhobby.html</a>
+    </div>
+    <div class="branch">
+      <div class="line"></div>
+      <a class="box" href="file:///Chapter2/anchor.html" target="_blank">Mobile Links<br>anchor.html</a>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
