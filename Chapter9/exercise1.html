@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>New Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input[type="text"], input[type="password"], select { width: 300px; padding: 5px; margin-top: 5px; }
+    fieldset { margin-top: 20px; width: 350px; }
+    .section { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>New Form</h1>
+
+  <!-- h) form tag with action and post method -->
+  <form action="https://webdevbasics.net/scripts/demo.php" method="post">
+
+    <!-- a) text box: username, max 30 characters -->
+    <div class="section">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" maxlength="30" />
+    </div>
+
+    <!-- b) radio buttons: favorite day of the week -->
+    <div class="section">
+      <p><strong>Favorite Day of the Week:</strong></p>
+      <input type="radio" name="favday" value="monday" /> Monday <br />
+      <input type="radio" name="favday" value="tuesday" /> Tuesday <br />
+      <input type="radio" name="favday" value="wednesday" /> Wednesday <br />
+      <input type="radio" name="favday" value="thursday" /> Thursday <br />
+      <input type="radio" name="favday" value="friday" /> Friday <br />
+      <input type="radio" name="favday" value="saturday" /> Saturday <br />
+      <input type="radio" name="favday" value="sunday" /> Sunday <br />
+    </div>
+
+    <!-- c) select list: favorite social networking site -->
+    <div class="section">
+      <label for="socialnet">Favorite Social Networking Site:</label>
+      <select id="socialnet" name="socialnet">
+        <option value="">-- Select --</option>
+        <option value="instagram">Instagram</option>
+        <option value="twitter">X (Twitter)</option>
+        <option value="tiktok">TikTok</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="facebook">Facebook</option>
+      </select>
+    </div>
+
+    <!-- d) fieldset + legend: Shipping Address -->
+    <fieldset>
+      <legend>Shipping Address</legend>
+      <label>Address Line 1: <input type="text" name="addressline1" /></label>
+      <label>Address Line 2: <input type="text" name="addressline2" /></label>
+      <label>City: <input type="text" name="city" /></label>
+      <label>State: <input type="text" name="state" /></label>
+      <label>ZIP: <input type="text" name="zip" /></label>
+    </fieldset>
+
+    <!-- e) image button: signup.gif -->
+    <div class="section">
+      <p><strong>Image Button:</strong></p>
+      <input type="image" src="signup.gif" alt="Sign Up" />
+    </div>
+
+    <!-- f) hidden input: userid -->
+    <input type="hidden" name="userid" value="" />
+
+    <!-- g) password box: pword -->
+    <div class="section">
+      <label for="pword">Password:</label>
+      <input type="password" id="pword" name="pword" />
+    </div>
+
+    <div class="section">
+      <input type="submit" value="Submit" />
+    </div>
+
+  </form>
+
+</body>
+</html>
