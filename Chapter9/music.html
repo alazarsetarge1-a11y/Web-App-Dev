@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Music Survey</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    h1 { margin-bottom: 20px; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
+    input[type="text"], input[type="email"], input[type="date"], select {
+      width: 300px; padding: 5px; margin-top: 5px;
+    }
+    textarea { margin-top: 5px; }
+    fieldset { margin-top: 20px; width: 350px; }
+    .section { margin-top: 20px; }
+    footer { margin-top: 40px; border-top: 1px solid #ccc; padding-top: 10px; font-size: 0.85em; color: #555; }
+  </style>
+</head>
+<body>
+
+  <h1>Music Survey</h1>
+
+  <form action="https://webdevbasics.net/scripts/demo.php" method="post">
+
+    <!-- Text box: name -->
+    <div class="section">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" />
+    </div>
+
+    <!-- Email input -->
+    <div class="section">
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" name="email" />
+    </div>
+
+    <!-- Scrolling text box: 60 wide, 3 rows -->
+    <div class="section">
+      <label for="comments">Comments:</label>
+      <textarea id="comments" name="comments" cols="60" rows="3"></textarea>
+    </div>
+
+    <!-- Radio button group: favorite genre (fieldset + legend) -->
+    <fieldset>
+      <legend>Favorite Music Genre</legend>
+      <input type="radio" name="genre" value="hiphop" /> Hip-Hop <br />
+      <input type="radio" name="genre" value="rnb" /> R&amp;B <br />
+      <input type="radio" name="genre" value="pop" /> Pop <br />
+      <input type="radio" name="genre" value="rock" /> Rock <br />
+      <input type="radio" name="genre" value="jazz" /> Jazz <br />
+    </fieldset>
+
+    <!-- Select box: shows 3 items, has 5 options -->
+    <div class="section">
+      <label for="platform">Favorite Streaming Platform:</label>
+      <select id="platform" name="platform" size="3">
+        <option value="spotify">Spotify</option>
+        <option value="applemusic">Apple Music</option>
+        <option value="tidal">Tidal</option>
+        <option value="youtube">YouTube Music</option>
+        <option value="amazon">Amazon Music</option>
+      </select>
+    </div>
+
+    <!-- Date form control -->
+    <div class="section">
+      <label for="listendate">What date do you listen to music?</label>
+      <input type="date" id="listendate" name="listendate" />
+    </div>
+
+    <!-- Submit and Reset buttons -->
+    <div class="section">
+      <input type="submit" value="Submit" />
+      &nbsp;
+      <input type="reset" value="Reset" />
+    </div>
+
+  </form>
+
+  <footer>
+    <p>Name: Alazar | Email: alazar@example.com</p>
+  </footer>
+
+</body>
+</html>
