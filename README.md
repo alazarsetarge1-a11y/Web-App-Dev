@@ -1,2 +1,2 @@
 # Web-App-Dev
-Web App Class learning more about HTML
+Learning more about HTML
